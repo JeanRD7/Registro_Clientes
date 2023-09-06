@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Registro_Clientes.DAL;
 using Registro_Clientes.Models;
 
 namespace Registro_Clientes.DAL
