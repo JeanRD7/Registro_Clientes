@@ -1,0 +1,98 @@
+﻿
+@page "/Ticket"
+@page "/Ticket/{TicketId:int}"
+@inject TicketsBLL TicketsBLL
+@inject NotificationService nt
+<h3>Tickets</h3>
+
+
+<EditForm Model="Ticket" OnInvalidSubmit="Guardar">
+    <DataAnnotationsValidator/>
+
+    <div class="container">
+        <div class="card shadow-lg">
+            <div class="card-header">
+                <h3>Registro de Tickets</h3>
+            </div>
+            <div class="card-body">
+                @*SistemaId*@
+                <div class="col-xs-12 col-sn-12 col-nd-8 col-lg-6 col-xl-4"></div>
+
+                @*Nombre*@
+                <div class="mb-3"></div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-center">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary" @onclick="Nuevo"> <i class="oi oi-file" /> Nuevo </button>
+                    <button type="submit" class="btn btn-success"> <i class="oi oi-document" /> Guardar </button>
+                    <button type="button" class="btn btn-danger" @onclick="Eliminar"> <i class="oi oi-trash" /> Eliminar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</EditForm>
+
+@code {
+
+    [Parameter]
+
+    public int? TicketId { get; set; }
+
+    public Tickets Ticket { get; set; } = new Tickets();
+
+    protected override void OnInitialized()
+    {
+        if (TicketId.HasValue)
+        {
+            Ticket.TicketId = TicketId.Value;
+            Buscar();
+        }
+    }
+
+    public void Buscar()
+    {
+        var Ticket_Encontrado = TicketsBLL.Buscar(Ticket.TicketId);
+
+        if(Ticket_Encontrado != null)
+        {
+            Ticket = Ticket_Encontrado;
+        }
+        else
+        {
+
+        }
+    }
+
+    public void Nuevo()
+    {
+        this.Ticket = new Tickets();
+    }
+
+    public void Guardar()
+    {
+        //if (!Validar())
+        //{
+        //    NotificationService.ShorNotification(
+        //        titulo: "Validacion",
+        //        mensaje: "Error revise los campos",
+        //        NotificationService.Success);
+        //}
+
+        //var guardo = TicketId.Guardar(this.Ticket);
+
+        TicketsBLL.Guardar(this.Ticket);
+    }
+
+    public void Eliminar()
+    {
+        Buscar();
+        TicketsBLL.Eliminar(this.Ticket);
+    }
+
+    public void Validar()
+    {
+        
+    }
+}
