@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-
+using Microsoft.EntityFrameworkCore;
+using Registro_Clientes.DAL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
+//ConStr que se usara en el contexto Ticket
+var ConStr = builder.Configuration.GetConnectionString("ConStr");
+
+//agregarmos el contexto tickets con el ConStr
+builder.Services.AddDbContext<TicketContext>(Op => Op.UseSqlite(ConStr));
 
 var app = builder.Build();
 
