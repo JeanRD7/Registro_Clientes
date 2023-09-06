@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="BLL\" />
     <Folder Include="Pages\Consultas\" />
     <Folder Include="Pages\Registros\" />
   </ItemGroup>
