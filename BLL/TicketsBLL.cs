@@ -24,16 +24,20 @@ namespace Registro_Clientes.BLL
         private bool Insertar(Tickets Ticket)
         {
             _contexto.Tickets.Add(Ticket);
-            int cantidad = _contexto.SaveChanges();
-            return cantidad > 0;
+            return _contexto.SaveChanges() > 0;
         }
 
         //metodo modificar
         public bool Modificar(Tickets Ticket)
         {
-            _contexto.Update(Ticket);
-            int cantidad = _contexto.SaveChanges();
-            return cantidad > 0;
+
+            var existe = _contexto.Tickets.Find(Ticket.TicketId);
+            if (existe != null)
+            {
+                _contexto.Entry(existe).CurrentValues.SetValues(Ticket);
+                return _contexto.SaveChanges() > 0;
+            }
+            return false;
         }
 
         //metodo guardar
@@ -46,19 +50,21 @@ namespace Registro_Clientes.BLL
         }
 
         //metodo eliminar
-        public bool Eliminar(Tickets Ticket)
+        public bool Eliminar(int TicketId)
         {
-            _contexto.Tickets.Remove(Ticket);
-            int cantidad = _contexto.SaveChanges();
-            return cantidad > 0;
+            var eliminado = _contexto.Tickets.Where(op => op.TicketId == TicketId).SingleOrDefault();
+            if(eliminado != null)
+            {
+                _contexto.Entry(eliminado).State = EntityState.Deleted;
+                return _contexto.SaveChanges() > 0;
+            }
+            return false;
         }
 
         //metodo buscar
         public Tickets? Buscar(int TicketId)
         {
-            return _contexto.Tickets
-                .AsTracking()
-                .FirstOrDefault(op => op.TicketId == TicketId);
+            return _contexto.Tickets.Where(op => op.TicketId == TicketId).AsNoTracking().SingleOrDefault();
         }
 
         //metodo Getlist
